@@ -19,6 +19,8 @@
       </form>
     </main>
 
+    <ul id="errorMessages"></ul>
+
     <footer>
       <p class="text-center text-muted">&copy; Dashboard</p>
     </footer>
@@ -40,18 +42,20 @@
     if (!data.email || !data.password) {
       return;
     }
-
     $.ajax({
       url: "/login",
       type: "POST",
-      data: data,
-      success: function () {
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      success: function (data) {
         console.log("success");
         //redirect to dashboard:
         window.location.href = "/dashboard";
       },
-      error: function () {
-        console.log("error");
+      error: function (message) {
+        $("#errorMessages")
+          .empty()
+          .append(`<li>${message.responseJSON.message}</li>`);
       },
     });
   }
