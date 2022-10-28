@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Login</title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"
+    ></script>
+    <!-- CSS (load bootstrap from a CDN) -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+</head>
+<body class="container">
+<header>
+    Login
+</header>
+<main>
+    <form id="loginForm">
+        <div>
+            <label for="email">Email</label>
+            <input type="email" id="email" required/>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" id="password" required/>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+    <ul id="errorMessages"></ul>
+</main>
+<footer>
+    <p class="text-center text-muted">&copy; Dashboard</p>
+</footer>
+</body>
+
+
+<script>
+    $(document).ready(function () {
+        $("#loginForm").on("submit", validate);
+    });
+
+    function validate(e) {
+        e.preventDefault();
+        const data = {
+            email: $("#email").val().trim(),
+            password: $("#password").val().trim(),
+        };
+
+        if (!data.email || !data.password) {
+            return;
+        }
+        $.ajax({
+            url: "/login",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (data) {
+                window.location.replace("/");
+            },
+            error: function (message) {
+                $("#errorMessages")
+                    .empty()
+                    .append(`<li>${message.responseJSON.message}</li>`);
+            },
+        });
+    }
+</script>
+
+</html>

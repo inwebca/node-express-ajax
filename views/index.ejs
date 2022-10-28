@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Dashboard <%= userName %></title>
+    <script
+            src="https://code.jquery.com/jquery-3.6.1.min.js"
+            integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+            crossorigin="anonymous"
+    ></script>
+    <!-- CSS (load bootstrap from a CDN) -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+</head>
+<body class="container">
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Dashboard</a>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link"><button type="button" id="logoutBtn">Log out</button></a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <div class="jumbotron">
+        <h1>Dashboard! </h1>
+        <h2>welcome <%= userName %></h2>
+    </div>
+</main>
+
+<footer>
+    <p class="text-center text-muted">&copy; Dashboard</p>
+</footer>
+</body>
+<script>
+    $(document).ready(function () {
+        $("#logoutBtn").on("click", logout);
+    });
+
+    function logout() {
+        $.ajax({
+            url: "/logout",
+            type: "POST",
+            contentType: "application/json",
+            success: function (data) {
+                console.log(data);
+                window.location.replace("/login");
+            },
+            error: function (message) {
+               console.log(message);
+            },
+        });
+    }
+
+</script>
+</html>
+
+
